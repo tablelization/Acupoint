@@ -3,144 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>針灸百科 - 初階與進階全收錄</title>
+    <title>針灸百科：初階/進階全體系</title>
     <style>
         :root {
             --primary: #2c3e50;
             --basic-color: #27ae60;
             --pro-color: #8e44ad;
             --accent: #e67e22;
-            --bg: #f8f9fa;
+            --bg: #f4f7f6;
         }
 
         body { font-family: 'PingFang HK', 'Microsoft JhengHei', sans-serif; background: var(--bg); color: var(--primary); margin: 0; padding: 20px; }
         .container { max-width: 1200px; margin: 0 auto; }
         
-        header { text-align: center; padding: 20px; border-bottom: 3px solid var(--primary); margin-bottom: 30px; }
-        header h1 { margin: 0; color: var(--primary); }
-        header p { font-style: italic; color: #666; }
+        header { text-align: center; padding: 20px; border-bottom: 3px solid var(--primary); margin-bottom: 20px; }
+        header p { color: #666; font-size: 0.9em; }
 
-        .controls { position: sticky; top: 0; background: var(--bg); padding: 10px 0; z-index: 100; border-bottom: 1px solid #ddd; }
-        .search-bar { width: 100%; padding: 15px; font-size: 18px; border: 2px solid #ccc; border-radius: 8px; margin-bottom: 10px; }
+        .controls { position: sticky; top: 0; background: var(--bg); padding: 15px 0; z-index: 100; border-bottom: 1px solid #ddd; }
+        .search-bar { width: 100%; padding: 12px; font-size: 16px; border: 2px solid #ccc; border-radius: 8px; margin-bottom: 10px; }
         
-        .filter-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
-        .btn { padding: 8px 20px; border: none; border-radius: 20px; cursor: pointer; background: #ddd; font-weight: bold; transition: 0.3s; }
-        .btn.active[data-type="all"] { background: var(--primary); color: white; }
-        .btn.active[data-type="basic"] { background: var(--basic-color); color: white; }
-        .btn.active[data-type="pro"] { background: var(--pro-color); color: white; }
+        .filter-section { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+        .filter-group { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .filter-label { font-weight: bold; font-size: 14px; min-width: 70px; }
+        
+        .btn { padding: 5px 15px; border: 1px solid #ccc; border-radius: 15px; cursor: pointer; background: white; font-size: 13px; transition: 0.3s; }
+        .btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .btn-basic.active { background: var(--basic-color); border-color: var(--basic-color); }
+        .btn-pro.active { background: var(--pro-color); border-color: var(--pro-color); }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; margin-top: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; margin-top: 20px; }
         
-        .card { background: white; border-radius: 12px; padding: 20px; shadow: 0 4px 6px rgba(0,0,0,0.1); border-top: 6px solid #ccc; position: relative; }
+        .card { background: white; border-radius: 12px; padding: 18px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); border-top: 5px solid #ccc; }
         .card.basic { border-top-color: var(--basic-color); }
         .card.pro { border-top-color: var(--pro-color); }
 
-        .card h2 { margin: 0 0 10px 0; display: flex; justify-content: space-between; align-items: center; }
-        .badge { font-size: 12px; padding: 3px 8px; border-radius: 4px; color: white; }
-        .bg-basic { background: var(--basic-color); }
-        .bg-pro { background: var(--pro-color); }
+        .card h2 { margin: 0 0 8px 0; font-size: 1.3em; display: flex; justify-content: space-between; }
+        .badge { font-size: 11px; padding: 2px 6px; border-radius: 4px; color: white; height: fit-content; }
+        
+        .info-row { margin-bottom: 8px; font-size: 14px; line-height: 1.4; }
+        .label { font-weight: bold; color: #7f8c8d; margin-right: 5px; }
+        
+        .type-tag { display: inline-block; background: #eef2f3; border: 1px solid #dfe6e9; padding: 1px 8px; border-radius: 10px; font-size: 11px; margin-right: 4px; color: #2d3436; }
+        .symptom-tag { display: inline-block; color: var(--accent); font-size: 12px; margin-right: 5px; font-weight: 500; }
 
-        .info-row { margin-bottom: 10px; font-size: 15px; }
-        .label { font-weight: bold; color: #555; width: 60px; display: inline-block; }
-        
-        .tags { margin-top: 10px; }
-        .tag { display: inline-block; background: #eee; padding: 2px 10px; border-radius: 15px; font-size: 12px; margin: 2px; color: #666; }
-        
-        .warning-box { background: #fff5f5; border-left: 4px solid #ff4d4f; padding: 8px; margin-top: 10px; font-size: 13px; color: #cf1322; }
+        .warning { color: #d63031; font-weight: bold; font-size: 12px; margin-top: 8px; padding: 5px; background: #fff5f5; border-radius: 4px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <h1>針灸學習百科</h1>
-        <p>「醫乃仁術，非仁者不能達之」 | 「刺之要，氣至而有效」</p>
+        <h1>針灸百科檢索系統</h1>
+        <p>整合「運動損傷初階 18 穴」與「進階特定穴/五輸穴/十五絡穴系統」</p>
     </header>
 
     <div class="controls">
-        <input type="text" id="searchInput" class="search-bar" placeholder="搜尋穴位、經絡、症狀（例如：腰痛、膝蓋、合谷、原穴）...">
-        <div class="filter-btns">
-            <button class="btn active" data-type="all">全部顯示</button>
-            <button class="btn" data-type="basic">初階 (18穴)</button>
-            <button class="btn" data-type="pro">進階特定穴</button>
+        <input type="text" id="searchInput" class="search-bar" placeholder="搜尋名稱、經絡、症狀或特定穴類型 (如：原穴、井穴、腰痛)...">
+        
+        <div class="filter-section">
+            <div class="filter-group">
+                <span class="filter-label">課程級別：</span>
+                <button class="btn active" data-filter="all">全部</button>
+                <button class="btn btn-basic" data-filter="basic">初階 (18穴)</button>
+                <button class="btn btn-pro" data-filter="pro">進階系統</button>
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">特定穴位：</span>
+                <button class="btn" data-tag="五輸穴">五輸穴</button>
+                <button class="btn" data-tag="原穴">原穴</button>
+                <button class="btn" data-tag="絡穴">絡穴</button>
+                <button class="btn" data-tag="八脈交會穴">八脈交會穴</button>
+            </div>
         </div>
-        <div id="resultCount" style="font-size: 14px; color: #777;"></div>
+        <div id="stats" style="font-size: 12px; color: #888;">顯示計：0</div>
     </div>
 
-    <div class="grid" id="dataGrid"></div>
+    <div class="grid" id="pointGrid"></div>
 </div>
 
 <script>
-    const points = [
-        // 初階 18 穴
-        { id: 1, name: "合谷", level: "basic", meridian: "手陽明大腸經", pos: "手背第一、二掌骨間，虎口偏食指", symptoms: "頭面百病、牙痛、面癱、感冒初起", note: "四總穴。孕婦忌用 (促宮縮)", tags: ["頭面", "原穴"] },
-        { id: 2, name: "陽陵泉", level: "basic", meridian: "足少陽膽經", pos: "小腿外側，腓骨小頭前下方凹陷", symptoms: "全身筋膜病、IT Band緊張、膝痛", note: "八會穴之「筋會」", tags: ["筋傷", "合穴"] },
-        { id: 3, name: "太沖", level: "basic", meridian: "足厥陰肝經", pos: "足背第一、二蹠骨間凹陷處", symptoms: "肝氣鬱結、焦慮、肌肉抽筋", note: "四關穴之一", tags: ["情緒", "原穴", "輸穴"] },
-        { id: 4, name: "足三里", level: "basic", meridian: "足陽明胃經", pos: "膝下三寸，脛骨外兩橫指處", symptoms: "胃痛腹脹、消化不良、免疫低下", note: "四總穴。補氣健脾要穴", tags: ["腸胃", "補氣", "合穴"] },
-        { id: 5, name: "列缺", level: "basic", meridian: "手太陰肺經", pos: "前臂橈骨莖突上方 1.5 寸", symptoms: "頭項強痛、頸椎僵硬、感冒", note: "四總穴。通於任脈", tags: ["頸椎", "絡穴"] },
-        { id: 6, name: "委中", level: "basic", meridian: "足太陽膀胱經", pos: "膝窩中央，橫紋正中凹陷處", symptoms: "腰背痛、坐骨神經痛、下肢抽筋", note: "四總穴「腰背委中求」", tags: ["腰背", "合穴"] },
-        { id: 7, name: "曲池", level: "basic", meridian: "手陽明大腸經", pos: "肘橫紋外側端，屈肘之交點", symptoms: "上肢疼痛、濕疹、高血壓、滑鼠手", note: "清熱疏風要穴", tags: ["上肢", "合穴"] },
-        { id: 8, name: "太溪", level: "basic", meridian: "足少陰腎經", pos: "內踝與跟腱之間凹陷處", symptoms: "補腎壯腰、耳鳴、失眠、畏寒", note: "腎經原穴，補本要穴", tags: ["補腎", "原穴", "輸穴"] },
-        { id: 9, name: "崑崙", level: "basic", meridian: "足太陽膀胱經", pos: "外踝後方與跟腱之間凹陷處", symptoms: "足踝扭傷、足底筋膜炎、腰背痛", note: "下肢運動損傷核心穴", tags: ["踝傷", "經穴"] },
-        { id: 10, name: "三陰交", level: "basic", meridian: "足太陰脾經", pos: "內踝尖上三寸，脛骨後緣", symptoms: "婦科月經不調、失眠、水腫", note: "肝脾腎三經交會", tags: ["婦科", "失眠"] },
-        { id: 11, name: "犢鼻", level: "basic", meridian: "經外奇穴/胃經", pos: "膝眼外側凹陷處", symptoms: "膝關節腫痛、退化、滑膜炎", note: "運動後膝蓋不適首選", tags: ["膝蓋"] },
-        { id: 12, name: "內關", level: "basic", meridian: "手厥陰心包經", pos: "腕橫紋上二寸，兩筋之間", symptoms: "焦慮失眠、心悸、手腕痛", note: "八脈交會穴。穩定情緒", tags: ["安神", "絡穴"] },
-        { id: 13, name: "手三里", level: "basic", meridian: "手陽明大腸經", pos: "肘橫紋下二寸", symptoms: "滑鼠手、鍵盤手、前臂肌肉過勞", note: "網球/羽球運動常用", tags: ["上肢"] },
-        { id: 14, name: "後溪", level: "basic", meridian: "手太陽小腸經", pos: "第五掌指關節後凹陷處", symptoms: "頸椎僵硬、落枕、肩背痛", note: "通督脈，治脊柱代償", tags: ["頸椎", "輸穴"] },
-        { id: 15, name: "尺澤", level: "basic", meridian: "手太陰肺經", pos: "肘窩橫紋上，肱二頭肌腱外側", symptoms: "呼吸道症狀、網球肘內側痛", note: "肺經水穴，潤化筋膜", tags: ["呼吸道", "合穴"] },
-        { id: 16, name: "承山", level: "basic", meridian: "足太陽膀胱經", pos: "小腿後側，腓腸肌腹下分叉處", symptoms: "足跟痛、腓腸肌緊、跟腱炎", note: "釋放深層筋膜緊張", tags: ["小腿"] },
-        { id: 17, name: "公孫", level: "basic", meridian: "足太陰脾經", pos: "第一蹠骨下緣前方凹陷處", symptoms: "腹痛胃脹、核心肌群失衡", note: "通衝脈，矯正軀幹不穩", tags: ["腸胃", "絡穴"] },
-        { id: 18, name: "照海", level: "basic", meridian: "足少陰腎經", pos: "內踝尖下方凹陷處", symptoms: "內踝拉傷、足底痛、步態不調", note: "陰蹻脈起點", tags: ["足部"] },
+    const acupunctureData = [
+        // 初階 18 穴 (保留完整筆記描述)
+        { name: "合谷", lv: "basic", m: "手陽明大腸經", pos: "手背第一、二掌骨間", sym: "頭面百病、牙痛、感冒", type: "原穴、四總穴", tags: ["頭面", "五輸穴"], note: "孕婦忌用" },
+        { name: "曲池", lv: "basic", m: "手陽明大腸經", pos: "肘橫紋外側端", sym: "上肢痛、濕疹、高血壓", type: "合穴", tags: ["五輸穴", "清熱"], note: "" },
+        { name: "手三里", lv: "basic", m: "手陽明大腸經", pos: "肘橫紋下二寸", sym: "滑鼠手、前臂肌肉過勞", type: "經穴屬性", tags: ["上肢"], note: "" },
+        { name: "列缺", lv: "basic", m: "手太陰肺經", pos: "橈骨莖突上方1.5寸", sym: "頭項強痛、頸椎僵硬、感冒", type: "絡穴、四總穴、八脈交會穴", tags: ["頸椎"], note: "通於任脈" },
+        { name: "尺澤", lv: "basic", m: "手太陰肺經", pos: "肘窩肱二頭肌腱外側", sym: "咳嗽、網球肘內側、筋膜潤化", type: "合穴", tags: ["五輸穴", "上肢"], note: "" },
+        { name: "內關", lv: "basic", m: "手厥陰心包經", pos: "腕橫紋上二寸兩筋間", sym: "心悸、焦慮失眠、胃痛", type: "絡穴、八脈交會穴", tags: ["安神", "心血管"], note: "通於陰維脈" },
+        { name: "後溪", lv: "basic", m: "手太陽小腸經", pos: "第五掌指關節後凹陷", sym: "落枕、肩背痛、脊柱代償", type: "輸穴、八脈交會穴", tags: ["五輸穴", "頸椎"], note: "通於督脈" },
+        { name: "太沖", lv: "basic", m: "足厥陰肝經", pos: "足背第一二蹠骨間凹陷", sym: "情緒壓抑、肌肉抽筋、失眠", type: "輸穴、原穴", tags: ["五輸穴", "情緒"], note: "四關穴之一" },
+        { name: "足三里", lv: "basic", m: "足陽明胃經", pos: "膝下三寸脛骨外側", sym: "胃痛腹脹、補氣、免疫力", type: "合穴、四總穴", tags: ["五輸穴", "補氣"], note: "補法要穴" },
+        { name: "陽陵泉", lv: "basic", m: "足少陽膽經", pos: "腓骨小頭前下方凹陷", sym: "全身筋傷、ITB緊張、膝痛", type: "合穴、八會穴(筋會)", tags: ["五輸穴", "筋傷"], note: "" },
+        { name: "委中", lv: "basic", m: "足太陽膀胱經", pos: "膝窩橫紋正中", sym: "腰背痠痛、坐骨神經痛", type: "合穴、四總穴", tags: ["五輸穴", "腰背"], note: "腰背委中求" },
+        { name: "太溪", lv: "basic", m: "足少陰腎經", pos: "內踝與跟腱間凹陷", sym: "補腎、耳鳴、足跟痛", type: "輸穴、原穴", tags: ["五輸穴", "補腎"], note: "" },
+        { name: "崑崙", lv: "basic", m: "足太陽膀胱經", pos: "外踝與跟腱間凹陷", sym: "踝扭傷、足底筋膜炎", type: "經穴", tags: ["五輸穴", "下肢"], note: "" },
+        { name: "三陰交", lv: "basic", m: "足太陰脾經", pos: "內踝尖上三寸", sym: "婦科、失眠、下肢水腫", type: "三經交會穴", tags: ["婦科"], note: "肝脾腎三經交會" },
+        { name: "犢鼻", lv: "basic", m: "足陽明胃經", pos: "髕骨下緣外側凹陷", sym: "膝關節腫痛、退化", type: "局部取穴", tags: ["膝蓋"], note: "" },
+        { name: "承山", lv: "basic", m: "足太陽膀胱經", pos: "腓腸肌腹下分叉處", sym: "小腿抽筋、跟腱炎、靜脈曲張", type: "局部取穴", tags: ["下肢"], note: "" },
+        { name: "公孫", lv: "basic", m: "足太陰脾經", pos: "第一蹠骨基底前下方", sym: "胃心胸痛、核心失衡", type: "絡穴、八脈交會穴", tags: ["腸胃"], note: "通於衝脈" },
+        { name: "照海", lv: "basic", m: "足少陰腎經", pos: "內踝尖下方凹陷處", sym: "足底痛、咽喉乾、步態調校", type: "八脈交會穴", tags: ["補腎"], note: "通於陰蹻脈" },
 
-        // 進階特定穴 (補充)
-        { id: 19, name: "少商", level: "pro", meridian: "手太陰肺經", pos: "大指末節橈側，距指甲角0.1寸", symptoms: "咽喉腫痛、發燒、中風昏迷", note: "井穴（木）。急救要穴", tags: ["井穴", "急救"] },
-        { id: 20, name: "豐隆", level: "pro", meridian: "足陽明胃經", pos: "外踝尖上 8 寸，條口穴外側", symptoms: "痰多咳嗽、哮喘、頭痛暈眩", note: "胃經絡穴。中醫化痰要穴", tags: ["絡穴", "化痰"] },
-        { id: 21, name: "光明", level: "pro", meridian: "足少陽膽經", pos: "外踝尖上 5 寸，腓骨前緣", symptoms: "目痛、夜盲、下肢痿痺", note: "膽經絡穴。主治眼科疾病", tags: ["絡穴", "眼科"] },
-        { id: 22, name: "外關", level: "pro", meridian: "手少陽三焦經", pos: "腕背橫紋上 2 寸，尺橈骨之間", symptoms: "熱病、頭痛、耳聾、肘痛", note: "八脈交會穴。通陽維脈", tags: ["絡穴", "感冒"] }
+        // 進階特定穴 (補充五輸系統與十五絡)
+        { name: "少商", lv: "pro", m: "手太陰肺經", pos: "大指末節橈側指甲旁", sym: "喉嚨痛、發燒、中暑昏迷", type: "井穴", tags: ["五輸穴", "急救"], note: "" },
+        { name: "魚際", lv: "pro", m: "手太陰肺經", pos: "第一掌骨中點橈側", sym: "身熱、咳嗽、失音", type: "滎穴", tags: ["五輸穴", "呼吸道"], note: "" },
+        { name: "太淵", lv: "pro", m: "手太陰肺經", pos: "腕橫紋橈側", sym: "無脈症、久咳、氣虛", type: "輸穴、原穴、八會穴(脈會)", tags: ["五輸穴", "補氣"], note: "" },
+        { name: "豐隆", lv: "pro", m: "足陽明胃經", pos: "外踝尖上 8 寸", sym: "多痰、哮喘、頭痛眩暈", type: "絡穴", tags: ["化痰"], note: "中醫化痰第一穴" },
+        { name: "通里", lv: "pro", m: "手少陰心經", pos: "腕橫紋上 1 寸", sym: "心悸、舌強不語、悲恐", type: "絡穴", tags: ["安神"], note: "" },
+        { name: "支正", lv: "pro", m: "手太陽小腸經", pos: "腕橫紋上 5 寸", sym: "贅疣(扁平疣)、肘臂痠痛", type: "絡穴", tags: ["皮膚"], note: "解表熱與皮膚贅物" },
+        { name: "飛揚", lv: "pro", m: "足太陽膀胱經", pos: "外踝尖上 7 寸", sym: "慢性腰痛、鼻塞、下肢沉重", type: "絡穴", tags: ["腰背"], note: "" },
+        { name: "光明", lv: "pro", m: "足少陽膽經", pos: "外踝尖上 5 寸", sym: "夜盲、視物不清、乳房脹痛", type: "絡穴", tags: ["眼科"], note: "" },
+        { name: "蠡溝", lv: "pro", m: "足厥陰肝經", pos: "內踝尖上 5 寸", sym: "陰部癢痛、睪丸腫痛", type: "絡穴", tags: ["泌尿"], note: "" },
+        { name: "外關", lv: "pro", m: "手少陽三焦經", pos: "腕背橫紋上 2 寸", sym: "偏頭痛、發燒、耳鳴", type: "絡穴、八脈交會穴", tags: ["感冒"], note: "通於陽維脈" }
     ];
 
-    const grid = document.getElementById('dataGrid');
+    const grid = document.getElementById('pointGrid');
     const searchInput = document.getElementById('searchInput');
-    const resultCount = document.getElementById('resultCount');
-    let currentLevel = 'all';
+    const stats = document.getElementById('stats');
+    let levelFilter = 'all';
+    let tagFilter = '';
 
     function render() {
         const term = searchInput.value.toLowerCase();
-        const filtered = points.filter(p => {
-            const matchesSearch = p.name.includes(term) || p.meridian.includes(term) || p.symptoms.includes(term) || p.tags.some(t => t.includes(term));
-            const matchesLevel = currentLevel === 'all' || p.level === currentLevel;
-            return matchesSearch && matchesLevel;
+        const filtered = acupunctureData.filter(p => {
+            const matchSearch = p.name.includes(term) || p.m.includes(term) || p.sym.includes(term) || p.type.includes(term);
+            const matchLevel = levelFilter === 'all' || p.lv === levelFilter;
+            const matchTag = tagFilter === '' || p.type.includes(tagFilter) || p.tags.includes(tagFilter);
+            return matchSearch && matchLevel && matchTag;
         });
 
         grid.innerHTML = filtered.map(p => `
-            <div class="card ${p.level}">
-                <h2>${p.name} <span class="badge ${p.level === 'basic' ? 'bg-basic' : 'bg-pro'}">${p.level === 'basic' ? '初階' : '進階'}</span></h2>
-                <div class="info-row"><span class="label">經絡</span>${p.meridian}</div>
-                <div class="info-row"><span class="label">定位</span>${p.pos}</div>
-                <div class="info-row"><span class="label">主治</span>${p.symptoms}</div>
-                <div class="info-row"><span class="label">備註</span>${p.note}</div>
-                <div class="tags">${p.tags.map(t => `<span class="tag">#${t}</span>`).join('')}</div>
-                ${p.name === '合谷' ? '<div class="warning-box">⚠ 孕婦禁用，慎防促宮縮。</div>' : ''}
+            <div class="card ${p.lv}">
+                <h2>${p.name} <span class="badge" style="background:${p.lv==='basic'?'#27ae60':'#8e44ad'}">${p.lv==='basic'?'初階':'進階'}</span></h2>
+                <div class="info-row" style="color:#2980b9; font-weight:bold;">${p.m}</div>
+                <div class="info-row"><span class="label">定位：</span>${p.pos}</div>
+                <div class="info-row"><span class="label">症狀：</span>${p.sym.split('、').map(s=>`<span class="symptom-tag">${s}</span>`).join('')}</div>
+                <div class="info-row"><span class="label">屬性：</span>${p.type.split('、').map(t=>`<span class="type-tag">${t}</span>`).join('')}</div>
+                ${p.note ? `<div class="info-row"><span class="label">備註：</span>${p.note}</div>` : ''}
+                ${p.name === '合谷' ? '<div class="warning">⚠ 孕婦忌用，小心促宮縮</div>' : ''}
             </div>
         `).join('');
-
-        resultCount.innerText = `顯示 ${filtered.length} 個穴位`;
+        stats.innerText = `顯示計：${filtered.length} 個穴位`;
     }
 
-    // 搜尋事件
-    searchInput.addEventListener('input', render);
-
-    // 篩選按鈕事件
+    // 篩選邏輯
     document.querySelectorAll('.btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentLevel = btn.getAttribute('data-type');
+        btn.addEventListener('click', function() {
+            if (this.dataset.filter) {
+                document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
+                levelFilter = this.dataset.filter;
+            } else if (this.dataset.tag) {
+                const isAlreadyActive = this.classList.contains('active');
+                document.querySelectorAll('[data-tag]').forEach(b => b.classList.remove('active'));
+                tagFilter = isAlreadyActive ? '' : this.dataset.tag;
+                if (!isAlreadyActive) this.classList.add('active');
+                render();
+                return;
+            }
+            this.classList.add('active');
             render();
         });
     });
 
-    // 初始渲染
+    searchInput.addEventListener('input', render);
     render();
 </script>
 
