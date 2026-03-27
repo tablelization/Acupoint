@@ -1,1 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>運動損傷針灸班 (初階) - 穴位檢索系統</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #e67e22;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'PingFang HK', 'Microsoft JhengHei', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid var(--accent-color);
+            padding-bottom: 10px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-box:focus {
+            border-color: var(--accent-color);
+        }
+
+        .stats {
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: var(--accent-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .meridian {
+            font-size: 14px;
+            background: #eee;
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #555;
+        }
+
+        .section-title {
+            font-weight: bold;
+            color: #34495e;
+            margin-top: 10px;
+            display: block;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #e1f5fe;
+            color: #0288d1;
+            padding: 2px 8px;
+            border-radius: 15px;
+            font-size: 12px;
+            margin-right: 5px;
+            margin-top: 5px;
+        }
+
+        .warning {
+            color: #c0392b;
+            font-weight: bold;
+            font-size: 13px;
+            background: #fdf2f2;
+            padding: 5px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .no-results {
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 50px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>針灸班初階穴位百科</h1>
+        <p>醫乃仁術，非仁者不能達之</p>
+    </header>
+
+    <input type="text" id="searchInput" class="search-box" placeholder="搜尋穴位名稱、經絡或病徵 (如：膝蓋、腰、感冒)...">
+    
+    <div class="stats" id="stats">顯示全部穴位</div>
+
+    <div class="grid" id="acupunctureGrid">
+        </div>
+</div>
+
+<script>
+    const acupunctureData = [
+        { name: "合谷", meridian: "手陽明大腸經", position: "手背第一、二掌骨間，虎口偏食指處", symptoms: "頭面百病、牙痛、面癱、鼻塞、感冒初起", note: "四總穴之一。孕婦忌用 (促宮縮)", tags: ["頭面", "急救"] },
+        { name: "陽陵泉", meridian: "足少陽膽經", position: "小腿外側，腓骨小頭前下方凹陷處", symptoms: "全身筋膜/肌肉/關節病、IT Band 緊張、膝痛", note: "八會穴之「筋會」", tags: ["筋傷", "下肢"] },
+        { name: "太沖", meridian: "足厥陰肝經", position: "足背第一、二蹠骨間凹陷處", symptoms: "肝氣鬱結、焦慮易怒、肌肉抽筋、睡眠障礙", note: "情緒針灸首穴，「四關穴」", tags: ["情緒", "抽筋"] },
+        { name: "足三里", meridian: "足陽明胃經", position: "膝蓋下三寸，脛骨外兩橫指處", symptoms: "胃痛腹脹、消化不良、免疫低下、下肢無力", note: "四總穴之一，補氣健脾要穴", tags: ["消化", "補氣"] },
+        { name: "列缺", meridian: "手太陰肺經", position: "前臂橈骨莖突上方 1.5 寸", symptoms: "頭項強痛、頸椎僵硬、感冒咳嗽、自律神經", note: "通於任脈，四總穴之一", tags: ["頸椎", "呼吸道"] },
+        { name: "委中", meridian: "足太陽膀胱經", position: "膝窩中央，橫紋正中凹陷處", symptoms: "腰背痛、坐骨神經痛、下肢無力、肌肉抽筋", note: "避免傷及膕動脈與神經，四總穴之一", tags: ["腰背", "下肢"] },
+        { name: "曲池", meridian: "手陽明大腸經", position: "肘橫紋外側端，屈肘時之交點", symptoms: "上肢疼痛、濕疹、高血壓、滑鼠手", note: "擅長清熱疏風", tags: ["清熱", "上肢"] },
+        { name: "太溪", meridian: "足少陰腎經", position: "內踝與跟腱之間凹陷處", symptoms: "補腎壯腰、耳鳴、失眠、畏寒、下肢無力", note: "腎經原穴，「補腎即是補本」", tags: ["補腎", "慢性病"] },
+        { name: "崑崙", meridian: "足太陽膀胱經", position: "外踝後方與跟腱之間凹陷處", symptoms: "足踝扭傷、足底筋膜炎、腰背痠痛", note: "處理下肢運動損傷核心", tags: ["足踝", "腰背"] },
+        { name: "三陰交", meridian: "足太陰脾經", position: "內踝尖上三寸，脛骨後緣", symptoms: "婦科月經不調、失眠、腿部水腫、慢性疲勞", note: "肝脾腎三經交會，「婦科聖穴」", tags: ["婦科", "失眠"] },
+        { name: "犢鼻", meridian: "經外奇穴", position: "膝眼外側凹陷處", symptoms: "膝關節腫痛、退化、滑膜炎", note: "運動後膝蓋不適首選", tags: ["膝蓋", "運動傷"] },
+        { name: "內關", meridian: "手厥陰心包經", position: "腕橫紋上二寸，兩筋之間", symptoms: "焦慮失眠、心悸、暈車、手腕疼痛", note: "調節自律神經，穩定情緒", tags: ["心血管", "安神"] },
+        { name: "手三里", meridian: "手陽明大腸經", position: "肘橫紋下二寸", symptoms: "滑鼠手、鍵盤手、前臂肌肉過勞", note: "網球/羽球運動者常用", tags: ["上肢", "肌肉過勞"] },
+        { name: "後溪", meridian: "手太陽小腸經", position: "第五掌指關節後凹陷處", symptoms: "頸椎僵硬、落枕、肩背痛、脊柱代償", note: "通督脈，「小穴通大軸」", tags: ["頸椎", "脊柱"] },
+        { name: "尺澤", meridian: "手太陰肺經", position: "肘窩橫紋上，肱二頭肌腱外側", symptoms: "呼吸道症狀、網球肘內側痛、屈肘肌過勞", note: "肺經水穴，潤化筋膜", tags: ["上肢", "呼吸道"] },
+        { name: "承山", meridian: "足太陽膀胱經", position: "小腿後側，腓腸肌腹下分叉處", symptoms: "足跟痛、腓腸肌緊繃、跟腱炎、靜脈曲張", note: "釋放深層筋膜緊張", tags: ["小腿", "足跟"] },
+        { name: "公孫", meridian: "足太陰脾經", position: "第一蹠骨下緣前方凹陷處", symptoms: "腹痛胃脹、核心肌群失衡導致的代償", note: "通衝脈，矯正軀幹不穩", tags: ["腸胃", "核心"] },
+        { name: "照海", meridian: "足少陰腎經", position: "內踝尖下方凹陷處", symptoms: "內踝拉傷、足底疼痛、步態不協調", note: "陰蹻脈起點，穩定步態", tags: ["足部", "步態"] }
+    ];
+
+    const grid = document.getElementById('acupunctureGrid');
+    const searchInput = document.getElementById('searchInput');
+    const stats = document.getElementById('stats');
+
+    function displayPoints(data) {
+        grid.innerHTML = '';
+        if (data.length === 0) {
+            grid.innerHTML = '<div class="no-results">找不到相關穴位資料</div>';
+            return;
+        }
+
+        data.forEach(point => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            
+            let tagsHtml = point.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+            
+            card.innerHTML = `
+                <h2>${point.name} <span class="meridian">${point.meridian}</span></h2>
+                <div>${tagsHtml}</div>
+                <p><span class="section-title">📍 定位：</span>${point.position}</p>
+                <p><span class="section-title">🩹 主治：</span>${point.symptoms}</p>
+                <p><span class="section-title">💡 備註：</span>${point.note}</p>
+                ${point.name === "合谷" ? '<div class="warning">⚠ 注意：孕婦忌針</div>' : ''}
+            `;
+            grid.appendChild(card);
+        });
+        stats.innerText = `找到 ${data.length} 個相關穴位`;
+    }
+
+    searchInput.addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        const filtered = acupunctureData.filter(p => 
+            p.name.includes(term) || 
+            p.meridian.includes(term) || 
+            p.symptoms.includes(term) ||
+            p.tags.some(t => t.includes(term))
+        );
+        displayPoints(filtered);
+    });
+
+    // 初始載入
+    displayPoints(acupunctureData);
+</script>
+
+</body>
+</html>
 
